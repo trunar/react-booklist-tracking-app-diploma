@@ -12,18 +12,20 @@ body {
 }
 
 .wrapper {
-    width: 80vw;
+    width: 95vw;
     margin: 2.56rem auto;
 }
 
 header{
     text-align: center;
+    margin-bottom: 5rem;
 }
 
 .menu li {
-    display: inline;
-    margin-inline: 5rem;
+    display: inline-flex;
+    margin-inline: 5vw;
     font-size: 2.5rem;
+    max-width: 100%;
     transition: all 1s ease;
 }
 
@@ -36,4 +38,64 @@ header{
 .activeItem{
     font-weight: 900;
     color: #db4615;
+}
+
+.maindiv{
+    display: flex;
+}
+.sidediv{
+    width: 20%;
+}
+
+main {
+    display: flex;
+    width: 50%;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0 auto;
+}
+
+.item {
+    width: 15rem;
+    margin-bottom: 50px;
+    border: solid #862B0D 1px;
+    border-radius: 15px;
+    padding: 0.5rem;
+    background-color: bisque;
+
+    transition: all 1s ease;
+}
+
+.item:hover{
+    scale: 1.01;
+    border-color: rgb(202, 0, 0);
+    cursor: pointer;
+}
+
+.item img {
+    height: 25rem;
+    width: 100%;
+    border-radius: 15px 15px 0 0;
+}
+.item * {
+    text-align: center;
+}
+
+.dropdown {
+    font-family: inherit;
+    font-size: 1.25rem;
+    cursor: inherit;
+    line-height: inherit;
+    background-color: inherit;
+    border-color: inherit;
+    border-radius: 5px;
+    width: 100%;
+    color: inherit;
+    margin: 0.5rem 0;
+}
+
+.dropdown option:focus{background: black; }
+
+.dropdown:focus, .dropdown::selection{
+    outline: none;
 }
