@@ -1,3 +1,5 @@
+![image](https://github.com/trunar/react-booklist-tracking-app-diploma/assets/93582094/78a7c385-c722-40c9-beb2-754e7204dfbf)
+
 Object of research is tools for managing the reading list.
 
 Subject of research is Web applications for creating and tracking your own reading list.
