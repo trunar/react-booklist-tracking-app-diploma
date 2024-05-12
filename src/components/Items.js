@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Item from './Item'
+import AddItemCard from './AddItemCard'
 
 export class Items extends Component {
     handleReadingStatusChange = (itemId, newStatus) => {
@@ -12,14 +13,26 @@ export class Items extends Component {
         this.props.onItemsChange(updatedItems);
     };
 
+    handleItemClick = (clickedItem) => {
+        this.props.onItemClick(clickedItem);
+    };
+
     render() {
+        const { items, activeStatus } = this.props;
+        const filteredItems = items.filter(item => item.readingStatus === activeStatus);
+
         return (
             <div className='maindiv'>
                 <div className='sidediv'></div>
                 <main>
-                    <Item key={1} item={this.props.items[0]} />
-                    {this.props.items.map(el => (
-                        <Item key={el.id} item={el} onReadingStatusChange={this.handleReadingStatusChange} />
+                    <AddItemCard />
+                    {filteredItems.map(el => (
+                        <Item
+                            key={el.id}
+                            item={el}
+                            onReadingStatusChange={this.handleReadingStatusChange}
+                            onItemClick={this.handleItemClick}
+                        />
                     ))}
                 </main>
                 <div className='sidediv'></div>

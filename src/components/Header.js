@@ -1,18 +1,38 @@
 import React, {useState} from 'react'
 
-export default function Header() {
+export default function Header({ onStatusChange, selectedItem, onGoBackToLists }) {
+    const [active, setActive] = useState('Читатиму');
 
-    const [active, setActive] = useState(0);
+    const handleStatusChange = (status) => {
+        setActive(status);
+        onStatusChange(status);
+    };
 
-    return (
-        <header>
-            <div>
-                <ul className='menu'>
-                    <li className={active === 0 ? 'activeItem' : ''} onClick={() => setActive(0)}>Читатиму</li>
-                    <li className={active === 1 ? 'activeItem' : ''} onClick={() => setActive(1)}>Читаю</li>
-                    <li className={active === 2 ? 'activeItem' : ''} onClick={() => setActive(2)}>Прочитав</li>
-                </ul>
-            </div>
-        </header>
-    )
+    const handleGoBackClick = () => {
+        onGoBackToLists();
+    };
+
+    if (selectedItem === null){
+        return (
+            <header>
+                <div>
+                    <ul className='menu'>
+                        <li className={active === 'Читатиму' ? 'activeItem' : ''} onClick={() => handleStatusChange('Читатиму')}>Читатиму</li>
+                        <li className={active === 'Читаю' ? 'activeItem' : ''} onClick={() => handleStatusChange('Читаю')}>Читаю</li>
+                        <li className={active === 'Прочитав' ? 'activeItem' : ''} onClick={() => handleStatusChange('Прочитав')}>Прочитав</li>
+                    </ul>
+                </div>
+            </header>
+        )
+    } else {
+        return (
+            <header>
+                <div>
+                    <ul className='menu'>
+                        <li onClick={handleGoBackClick} >До списків</li>
+                    </ul>
+                </div>
+            </header>
+        )
+    }
 }
