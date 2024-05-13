@@ -36,9 +36,6 @@ header{
 .maindiv{
     display: flex;
 }
-.sidediv{
-    width: 20%;
-}
 main {
     display: flex;
     width: 50%;
@@ -49,6 +46,7 @@ main {
 .item {
     width: 15rem;
     min-height: 31rem;
+    max-height: 31rem;
     margin-bottom: 50px;
     border: solid #862B0D 1px;
     border-radius: 15px;
@@ -236,6 +234,7 @@ input:focus {
 .addItemCardInput {
     font-family: inherit;
     font-size: 1.25rem;
+    font-weight: 100;
     color: inherit;
     background: transparent;
     border: inherit;
@@ -287,7 +286,7 @@ input:focus {
     border-color: #862B0D;
     background: bisque;
     font: inherit;
-    font-size: large;
+    font-size: 1.5rem;
     color: inherit;
     width: 50%;
     text-align: center;
@@ -310,4 +309,41 @@ input:focus {
     color: inherit;
     margin: 0.5rem 0;
     transition: all 1s ease;
+}
+.sidediv{
+    width: 20%;
+    text-align: center;
+}
+.rightdiv {
+    text-align: left;
+}
+.sidediv hr {
+    margin-block: 1rem;
+    border:#862B0D solid 1px;
+}
+.sidediv h2 {
+    margin-bottom: 0.5rem;
+}
+.sidediv label input {
+    margin-right: 0.5rem;
+    
+}
+.sidediv label {
+    font-size: 1.25rem;
+}
+.pageNumForm input {
+    font-family: inherit;
+    font-size: 1rem;
+    color: inherit;
+    background: transparent;
+    border-width: 1px;
+    border-color: #862B0D;
+    width: 30%;
+    border-radius: 10px;
+    font-weight: 500;
+    padding: 0.25rem;
+    margin: 0.25rem;
+}
+input[type='radio'] {
+    accent-color: #862B0D;
 }
