@@ -2,6 +2,7 @@ import React from "react"
 import Header from "./components/Header";
 import Items from "./components/Items";
 import ItemPage from "./components/ItemPage";
+import SearchBar from "./components/SearchBar";
 
 const genresmas = ['науковий', 'фікшн', 'нонфікшн']
 
@@ -14,7 +15,7 @@ class App extends React.Component {
             id: 1,
             bookname: 'Перша книга',
             author: 'Автор книги 1',
-            cover: '1.jpg',
+            cover: './covers/1.jpg',
             pagenum: '123',
             publicationdate: '2001',
             genres: genresmas[0],
@@ -27,7 +28,7 @@ class App extends React.Component {
             id: 2,
             bookname: 'Друга книга',
             author: 'Автор книги 2',
-            cover: '2.jpg',
+            cover: './covers/2.jpg',
             pagenum: '1232',
             publicationdate: '2002',
             genres: genresmas[1],
@@ -40,7 +41,7 @@ class App extends React.Component {
             id: 3,
             bookname: 'Третя книга',
             author: 'Автор книги 3',
-            cover: '3.jpg',
+            cover: './covers/3.jpg',
             pagenum: '342',
             publicationdate: '2003',
             genres: genresmas[2],
@@ -52,7 +53,8 @@ class App extends React.Component {
 
         ],
         activeStatus: 'Читатиму',
-        selectedItem: null
+        selectedItem: null,
+        searchText: ''
       }
   }
 
@@ -98,8 +100,52 @@ class App extends React.Component {
     this.setState({ items: updatedItems });
   };
 
-  render(){
+  handleAddItem = (newItem) => {
+    const maxId = this.state.items.length > 0 ? Math.max(...this.state.items.map(item => item.id)) : 0;
+    const updatedItems = [...this.state.items, {
+      id: maxId + 1,
+      ...newItem,
+      cover: '',
+      pagenum: '',
+      publicationdate: '',
+      genres: '',
+      description: '',
+      rating: 0,
+      reviewText: '',
+      readingStatus: this.state.activeStatus
+    }];
+    this.setState({ items: updatedItems });
+  };
+
+  handleDeleteItem = (itemId) => {
+    const updatedItems = this.state.items.filter(item => item.id !== itemId);
+    this.setState({ items: updatedItems });
+  };
+
+  handleDeleteCover = () => {
     const { selectedItem } = this.state;
+    selectedItem.cover = '';
+    this.setState({ selectedItem });
+  };
+
+  handleAddCover = (coverData) => {
+    const { selectedItem, items } = this.state;
+    const updatedItems = items.map(item => {
+        if (item === selectedItem) {
+            item.cover = URL.createObjectURL(coverData);
+            console.log(URL.createObjectURL(coverData));
+        }
+        return item;
+    });
+    this.setState({ items: updatedItems });
+  };
+
+  handleSearchTextChange = (text) => {
+    this.setState({ searchText: text });
+  };
+
+  render(){
+    const { selectedItem, searchText } = this.state;
 
     if (selectedItem === null){
       return (
@@ -109,11 +155,17 @@ class App extends React.Component {
             selectedItem={selectedItem}
             onGoBackToLists={this.handleGoBackToLists}
           />
+          <SearchBar 
+            onSearchTextChange={this.handleSearchTextChange}
+          />
           <Items
             items={this.state.items}
             onItemsChange={this.handleItemsChange}
             activeStatus={this.state.activeStatus}
             onItemClick={this.handleItemClick}
+            onAddItem={this.handleAddItem}
+            onDeleteItem={this.handleDeleteItem}
+            searchText={searchText}
           />
         </div>
       );
@@ -130,6 +182,11 @@ class App extends React.Component {
             onRatingChange={this.handleRatingChange}
             onSaveReviewText={this.handleSaveReviewText}
             onSaveDescription={this.handleSaveDescription}
+            onDeleteItem={this.handleDeleteItem}
+            onGoBackToLists={this.handleGoBackToLists}
+            onAddCover={this.handleAddCover}
+            onDeleteCover={this.handleDeleteCover}
+            onReadingStatusChange={this.handleStatusChange}
           />
         </div>
       );

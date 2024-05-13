@@ -5,22 +5,18 @@ body {
     color: #862B0D;
     cursor: default;
 }
-
 * {
     margin: 0;
     padding: 0;
 }
-
 .wrapper {
     width: 95vw;
     margin: 2.56rem auto;
 }
-
 header{
     text-align: center;
     margin-bottom: 5rem;
 }
-
 .menu li {
     display: inline-flex;
     margin-inline: 5vw;
@@ -28,25 +24,21 @@ header{
     max-width: 100%;
     transition: all 1s ease;
 }
-
 .menu li:hover{
     font-size: 2.525rem;
     cursor: pointer;
     opacity: 70%;
 }
-
 .activeItem{
     font-weight: 900;
     color: #db4615;
 }
-
 .maindiv{
     display: flex;
 }
 .sidediv{
     width: 20%;
 }
-
 main {
     display: flex;
     width: 50%;
@@ -54,7 +46,6 @@ main {
     justify-content: space-between;
     margin: 0 auto;
 }
-
 .item {
     width: 15rem;
     margin-bottom: 50px;
@@ -62,16 +53,15 @@ main {
     border-radius: 15px;
     padding: 0.5rem;
     background-color: bisque;
-
+    padding-bottom: 0;
     transition: all 1s ease;
 }
-
 .item:hover{
     scale: 1.005;
     border-color: rgb(202, 0, 0);
 }
-
 .item img {
+    margin-top: -1.5rem;
     height: 25rem;
     width: 100%;
     border-radius: 15px 15px 0 0;
@@ -79,10 +69,9 @@ main {
 .item img:hover, .item .dropdown:hover, .item .addItemButton:hover {
     cursor: pointer;
 }
-.item * {
+.item *, .item {
     text-align: center;
 }
-
 .dropdown {
     font-family: inherit;
     font-size: 1.25rem;
@@ -96,11 +85,9 @@ main {
     margin: 0.5rem 0;
     transition: all 1s ease;
 }
-
 .dropdown:focus, .dropdown::selection{
     outline: none;
 }
-
 .addItemButton {
     font-size: 1.25rem;
     border-style: solid;
@@ -117,18 +104,15 @@ main {
     border-color: rgb(202, 0, 0);
     color: rgb(202, 0, 0);
 }
-
 .itemPageMainDiv {
     width: 100%;
     display: flex;
 }
-
 .itemPageMainDiv main {
     padding-left: 5rem;
     display: inline-flex;
     max-width: 100%;
 }
-
 .itemPageMainDiv .sidediv {
     width: 30%;
 }
@@ -138,22 +122,17 @@ main {
     border-width: 1px;
     border-style: solid;
 }
-
 .rightdiv {
     text-align: left;
 }
-
 .imageForm {
     float: right;
     text-align: center;
     width: 15vw;
 }
-
-
 .itemPageMainDiv .sidediv .dropdown {
     width: 10rem;
 }
-
 .itemPageUl {
     list-style-type: none;
     width: 100%;
@@ -161,21 +140,17 @@ main {
     padding: 0 5rem 0 0;
     font-size: 1.1rem;
 }
-
 .itemPageUl li {
     margin-bottom: 0.25rem;
 }
-
 .itemPageUl hr {
     border-style: solid;
     border-color:#862B0D;
     border-width: 1px;
 }
-
 .partUl, .itemPageUl hr {
     margin-bottom: 2.5rem;
 }
-
 .starRating span {
     font-size: 2.5rem;
     transition: all 1s ease;
@@ -186,7 +161,6 @@ main {
     font-size: 2.52rem;
     opacity: 60%;
 }
-
 .itemPageButton {
     text-align: center;
     font-size: 1.25rem;
@@ -199,7 +173,6 @@ main {
     width: 10rem;
     transition: all 1s ease;
 }
-
 .reviewForm .itemPageButton {
     
     display: inline-block;
@@ -209,7 +182,6 @@ main {
 .reviewForm {
     text-align: center;
 }
-
 .rightdiv .itemPageButton{
     margin-left: 0;
 }
@@ -219,11 +191,9 @@ main {
     color: rgb(202, 0, 0);
     cursor: pointer;
 }
-
 .deleteButton:hover {
     background-color: rgba(255, 0, 0, 0.2);
 }
-
 textarea {
     font-family: inherit;
     font-size: inherit;
@@ -236,12 +206,10 @@ textarea {
     width: 95%;
     height: auto;
 }
-
 textarea:focus{
     outline: none;
 }
-
-input {
+li input {
     font-family: inherit;
     font-size: 1rem;
     color: inherit;
@@ -255,13 +223,78 @@ input {
 input:focus {
     outline: none;
 }
-
 .i1{
     font-size: 2rem;
     font-weight: 600;
 }
-
-.i2{
+.i2 {
     font-size: 1.5rem;
     font-weight: 600;
+}
+.addItemCardInput {
+    font-family: inherit;
+    font-size: 1.25rem;
+    color: inherit;
+    background: transparent;
+    border: inherit;
+    border-color: #862B0D;
+    border-radius: 5px;
+    width: 92%;
+    margin: 0.05rem auto;
+}
+::placeholder {
+    color: inherit;
+}
+.addItemCardInput, .addItemButton {
+    margin-block: 0.2rem
+}
+
+.addItemButton {
+    background-color: rgb(255, 217, 170);
+    position: relative;
+}
+
+.xmark {
+    color: rgb(202, 0, 0);
+    margin: 0;
+    padding: 0;
+    background:bisque;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 15px;
+    width: 1.5rem;
+    height: 1.5rem;
+    position: relative;
+    left: 13.5rem;
+
+    text-align: center;
+    cursor: pointer;
+    transition: all 1s ease;
+}
+.xmark:hover{
+    background: rgb(202, 0, 0);
+    color:bisque
+}
+.searchdiv {
+    width: 100%;
+    margin: 0 auto;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+.searchdiv input {
+    border-width: 1px;
+    border-radius: 30px;
+    border-color: #862B0D;
+    background: bisque;
+    font: inherit;
+    font-size: large;
+    color: inherit;
+    width: 50%;
+    text-align: center;
+    padding: 0.75rem;
+    transition: all 1s ease;
+}
+.searchdiv input:hover{
+    border-color: rgb(202, 0, 0);
+    color: rgb(202, 0, 0);
 }

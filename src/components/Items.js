@@ -17,21 +17,30 @@ export class Items extends Component {
         this.props.onItemClick(clickedItem);
     };
 
+    handleDeleteItem = (clickedItem) => {
+        this.props.onDeleteItem(clickedItem);
+    };
+
     render() {
-        const { items, activeStatus } = this.props;
-        const filteredItems = items.filter(item => item.readingStatus === activeStatus);
+        const { items, activeStatus, searchText } = this.props;
+        const filteredItems = items.filter(item =>
+            (item.readingStatus === activeStatus) &&
+            (item.bookname.toLowerCase().includes(searchText.toLowerCase()) ||
+            item.author.toLowerCase().includes(searchText.toLowerCase()))
+        );
 
         return (
             <div className='maindiv'>
                 <div className='sidediv'></div>
                 <main>
-                    <AddItemCard />
+                    <AddItemCard onAddItem={this.props.onAddItem} />
                     {filteredItems.map(el => (
                         <Item
                             key={el.id}
                             item={el}
                             onReadingStatusChange={this.handleReadingStatusChange}
                             onItemClick={this.handleItemClick}
+                            onDeleteItem={this.handleDeleteItem}
                         />
                     ))}
                 </main>

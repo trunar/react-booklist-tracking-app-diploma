@@ -18,11 +18,17 @@ export class Item extends Component {
         this.props.onItemClick(this.props.item);
     };
 
+    handleDeleteClick = () => {
+        const { onDeleteItem } = this.props;
+        onDeleteItem(this.props.item.id);
+    };
+
     render() {
         return (
         <div className='item'>
+            <div className='xmark' onClick={this.handleDeleteClick}>x</div>
             <img
-                src={this.props.item.cover ? "./covers/" + this.props.item.cover : "./covers/noImage.png"}
+                src={this.props.item.cover ? this.props.item.cover : "./covers/noImage.png"}
                 alt={'Book cover with ID ' + this.props.item.id}
                 onClick={this.handleItemClick}
             />

@@ -60,6 +60,36 @@ export class ItemPage extends Component {
         this.setState({ description: event.target.value });
     };
 
+    handleDeleteClick = () => {
+        const { selectedItem, onDeleteItem } = this.props;
+        onDeleteItem(selectedItem.id);
+        this.props.onGoBackToLists();
+    };
+
+    handleDeleteCoverClick = () => {
+        const { onDeleteCover } = this.props;
+        onDeleteCover();
+    };
+
+    handleAddCoverClick = () => {
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = '.jpg';
+        fileInput.onchange = this.handleCoverChange;
+        fileInput.click();
+    };
+    
+    handleCoverChange = (event) => {
+        const file = event.target.files[0];
+        this.props.onAddCover(file);
+    };
+
+    handleReadingStatusChange = (status) => {
+        const { selectedItem, onReadingStatusChange } = this.props;
+        selectedItem.readingStatus = status;
+        onReadingStatusChange(selectedItem);
+    };
+
     render() {
         const { selectedItem } = this.props;
         const { isEditable, isPageEditable, reviewText, description } = this.state;
@@ -68,15 +98,16 @@ export class ItemPage extends Component {
 
                 <div className='sidediv leftdiv'>
                     <div className='imageForm'>
+                        <span>ID: {selectedItem.id}</span>
                         <img
-                            src={selectedItem.cover ? "./covers/" + selectedItem.cover : "./covers/noImage.png"}
+                            src={selectedItem.cover ? selectedItem.cover : "./covers/noImage.png"}
                             alt={'Book cover with ID ' + selectedItem.id}
                         />
                         <span>Відношення 3 : 5</span>
                         <br></br>
                         <span>Формат .jpg</span>
-                        <div className='itemPageButton'>Додати</div>
-                        <div className='itemPageButton deleteButton'>Видалити</div>
+                        <div className='itemPageButton' onClick={this.handleAddCoverClick}>Додати</div>
+                        <div className='itemPageButton deleteButton' onClick={this.handleDeleteCoverClick}>Видалити</div>
                     </div>
                 </div>
                     <main>
@@ -137,7 +168,7 @@ export class ItemPage extends Component {
                     ) : (
                         <div className='itemPageButton' onClick={this.handleEditPageClick}>Редагувати</div>
                     )}
-                    <div className='itemPageButton deleteButton'>Видалити</div>
+                    <div className='itemPageButton deleteButton' onClick={this.handleDeleteClick}>Видалити</div>
                 </div>
 
             </div>
