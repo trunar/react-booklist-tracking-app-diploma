@@ -1,4 +1,4 @@
-![image](https://github.com/trunar/react-booklist-tracking-app-diploma/assets/93582094/eee4c6a9-9019-4be0-b07a-6347f783bc1c)
+![image](https://github.com/trunar/react-booklist-tracking-app-diploma/assets/93582094/cc9b5ce4-1468-4bba-80c3-750bd1c83e24)
 
 Object of research is tools for managing the reading list.
 
