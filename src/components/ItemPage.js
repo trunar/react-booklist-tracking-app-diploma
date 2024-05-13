@@ -6,18 +6,29 @@ export class ItemPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          isEditable: false,
-          isPageEditable: false,
-          reviewText: '',
-          description: '',
+            isEditable: false,
+            isPageEditable: false,
+            bookname: '',
+            author: '',
+            pagenum: '',
+            publicationdate: '',
+            genre: '',
+            description: '',
+            reviewText: ''
         };
     }
 
     componentDidMount() {
         const { selectedItem } = this.props;
         if (selectedItem) {
-            this.setState({ reviewText: selectedItem.reviewText,
-                            description: selectedItem.description
+            this.setState({
+                bookname: selectedItem.bookname,
+                author: selectedItem.author,
+                pagenum: selectedItem.pagenum,
+                publicationdate: selectedItem.publicationdate,
+                genre: selectedItem.genre,
+                description: selectedItem.description,
+                reviewText: selectedItem.reviewText
             });
         }
     }
@@ -45,19 +56,22 @@ export class ItemPage extends Component {
     };
 
     handleSavePageClick = () => {
-        const { selectedItem, onSaveDescription } = this.props;
-        const { description } = this.state;
+        const { selectedItem, onSavePage } = this.props;
+        const { bookname, author, pagenum, publicationdate, genre, description } = this.state;
+        
         selectedItem.description = description;
-        onSaveDescription(selectedItem);
+        selectedItem.bookname = bookname;
+        selectedItem.author = author;
+        selectedItem.pagenum = pagenum;
+        selectedItem.publicationdate = publicationdate;
+        selectedItem.genre = genre;
+        
+        onSavePage(selectedItem);
         this.setState({ isPageEditable: false });
     };
 
     handleReviewChange = (event) => {
         this.setState({ reviewText: event.target.value });
-    };
-
-    handleDescriptionChange = (event) => {
-        this.setState({ description: event.target.value });
     };
 
     handleDeleteClick = () => {
@@ -90,9 +104,34 @@ export class ItemPage extends Component {
         onReadingStatusChange(selectedItem);
     };
 
+    handleDescriptionChange = (event) => {
+        this.setState({ description: event.target.value });
+    };
+
+    handleBooknameChange = (event) => {
+        this.setState({ bookname: event.target.value });
+    };
+    
+    handleAuthorChange = (event) => {
+        this.setState({ author: event.target.value });
+    };
+    
+    handlePagenumChange = (event) => {
+        this.setState({ pagenum: event.target.value });
+    };
+    
+    handlePublicationdateChange = (event) => {
+        this.setState({ publicationdate: event.target.value });
+    };
+
+    handleGenreChange = (event) => {
+        this.setState({ genre: event.target.value });
+    };
+
     render() {
         const { selectedItem } = this.props;
-        const { isEditable, isPageEditable, reviewText, description } = this.state;
+        const { isEditable, isPageEditable, bookname, author, pagenum, publicationdate, description, reviewText, genre } = this.state;
+        const genres = ['науковий', 'фікшн', 'нонфікшн', ''];
         return (
             <div className='itemPageMainDiv'>
 
@@ -113,11 +152,50 @@ export class ItemPage extends Component {
                     <main>
                         <ul className='itemPageUl'>
                             <div className='partUl'>
-                            <li><input className='i1' type="text" value={selectedItem.bookname} readOnly required /></li>
-                            <li><input className='i2' type="text" value={selectedItem.author} readOnly required /></li>
-                            <li>Сторінок: <input type="number" value={selectedItem.pagenum} readOnly maxLength={5} /></li>
-                            <li>Рік: <input type="number" value={selectedItem.publicationdate} maxLength={4} readOnly /></li>
-                            <li>Жанр: {selectedItem.genres}</li>
+                            <li><input
+                                className='i1'
+                                type="text"
+                                value={bookname}
+                                readOnly={!isPageEditable}
+                                style={{ borderWidth: isPageEditable ? '1px' : '0px' }}
+                                onChange={this.handleBooknameChange}
+                            /></li>
+                            <li><input
+                                className='i2'
+                                type="text"
+                                value={author}
+                                readOnly={!isPageEditable}
+                                style={{ borderWidth: isPageEditable ? '1px' : '0px' }}
+                                onChange={this.handleAuthorChange}
+                            /></li>
+                            <li>Сторінок: <input
+                                type="number"
+                                value={pagenum}
+                                readOnly={!isPageEditable}
+                                style={{ borderWidth: isPageEditable ? '1px' : '0px' }}
+                                onChange={this.handlePagenumChange}
+                            /></li>
+                            <li>Рік: <input
+                                type="number"
+                                value={publicationdate}
+                                readOnly={!isPageEditable}
+                                style={{ borderWidth: isPageEditable ? '1px' : '0px' }}
+                                onChange={this.handlePublicationdateChange}
+                            /></li>
+                            <li>Жанр: {isPageEditable ? (
+                                <select
+                                    value={genre}
+                                    onChange={this.handleGenreChange}
+                                    className='genreSelector'
+                                >
+                                    {genres.map((genreOption, index) => (
+                                        <option key={index} value={genreOption}>{genreOption}</option>
+                                    ))}
+                                </select>
+                            ) : (
+                                <span>{genre}</span>
+                            )}
+                            </li>
 
                             </div>
                             <hr></hr>

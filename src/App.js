@@ -4,8 +4,6 @@ import Items from "./components/Items";
 import ItemPage from "./components/ItemPage";
 import SearchBar from "./components/SearchBar";
 
-const genresmas = ['науковий', 'фікшн', 'нонфікшн']
-
 class App extends React.Component {
   constructor(props){
       super(props);
@@ -18,7 +16,7 @@ class App extends React.Component {
             cover: './covers/1.jpg',
             pagenum: '123',
             publicationdate: '2001',
-            genres: genresmas[0],
+            genre: 'науковий',
             description: 'Текст що описує книгу книгу книгу книгу книгу книгу книгу книгу.',
             rating: 0,
             reviewText: '',
@@ -31,7 +29,7 @@ class App extends React.Component {
             cover: './covers/2.jpg',
             pagenum: '1232',
             publicationdate: '2002',
-            genres: genresmas[1],
+            genre: 'фікшн',
             description: 'Текст що описує книгу книгу книгу книгу книгу книгу книгу книгу.',
             rating: 5,
             reviewText: 'Текст що описує відгук користувача про книгу книгу книгу книгу книгу книгу книгу книгу.',
@@ -44,7 +42,7 @@ class App extends React.Component {
             cover: './covers/3.jpg',
             pagenum: '342',
             publicationdate: '2003',
-            genres: genresmas[2],
+            genre: 'нонфікшн',
             description: 'Текст що описує книгу книгу книгу книгу книгу книгу книгу книгу.',
             rating: 3,
             reviewText: 'Текст що описує відгук користувача про книгу книгу книгу книгу книгу книгу книгу книгу.',
@@ -90,7 +88,7 @@ class App extends React.Component {
     });
     this.setState({ items: updatedItems });
   };
-  handleSaveDescription = (updatedItem) => {
+  handleSavePage = (updatedItem) => {
     const updatedItems = this.state.items.map(item => {
       if (item.id === updatedItem.id) {
         return updatedItem;
@@ -181,7 +179,7 @@ class App extends React.Component {
             selectedItem={selectedItem}
             onRatingChange={this.handleRatingChange}
             onSaveReviewText={this.handleSaveReviewText}
-            onSaveDescription={this.handleSaveDescription}
+            onSavePage={this.handleSavePage}
             onDeleteItem={this.handleDeleteItem}
             onGoBackToLists={this.handleGoBackToLists}
             onAddCover={this.handleAddCover}

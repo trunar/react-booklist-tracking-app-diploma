@@ -48,12 +48,13 @@ main {
 }
 .item {
     width: 15rem;
+    min-height: 31rem;
     margin-bottom: 50px;
     border: solid #862B0D 1px;
     border-radius: 15px;
     padding: 0.5rem;
     background-color: bisque;
-    padding-bottom: 0;
+    padding-bottom: 0.5rem;
     transition: all 1s ease;
 }
 .item:hover{
@@ -62,7 +63,7 @@ main {
 }
 .item img {
     margin-top: -1.5rem;
-    height: 25rem;
+    height: 23rem;
     width: 100%;
     border-radius: 15px 15px 0 0;
 }
@@ -85,7 +86,7 @@ main {
     margin: 0.5rem 0;
     transition: all 1s ease;
 }
-.dropdown:focus, .dropdown::selection{
+.dropdown:focus, .dropdown::selection, select:focus, select::selection{
     outline: none;
 }
 .addItemButton {
@@ -185,7 +186,7 @@ main {
 .rightdiv .itemPageButton{
     margin-left: 0;
 }
-.itemPageButton:hover, .dropdown:hover{
+.itemPageButton:hover, .dropdown:hover, select:hover{
     background-color: rgba(255, 128, 0, 0.14);
     border-color: rgb(202, 0, 0);
     color: rgb(202, 0, 0);
@@ -214,11 +215,12 @@ li input {
     font-size: 1rem;
     color: inherit;
     background: transparent;
-    border: none;
+    border-width: 0px;
+    border-color: #862B0D;
     width: auto;
     border-radius: 10px;
     font-weight: 500;
-    padding: 0.05rem;
+    padding: 0.25rem;
 }
 input:focus {
     outline: none;
@@ -248,12 +250,10 @@ input:focus {
 .addItemCardInput, .addItemButton {
     margin-block: 0.2rem
 }
-
 .addItemButton {
     background-color: rgb(255, 217, 170);
     position: relative;
 }
-
 .xmark {
     color: rgb(202, 0, 0);
     margin: 0;
@@ -297,4 +297,17 @@ input:focus {
 .searchdiv input:hover{
     border-color: rgb(202, 0, 0);
     color: rgb(202, 0, 0);
+}
+.genreSelector{
+    font-family: inherit;
+    font-size: 1rem;
+    cursor: inherit;
+    line-height: inherit;
+    background-color: inherit;
+    border-color: #862B0D;
+    border-radius: 5px;
+    width: auto;
+    color: inherit;
+    margin: 0.5rem 0;
+    transition: all 1s ease;
 }
