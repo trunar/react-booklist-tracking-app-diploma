@@ -4,56 +4,45 @@ import Items from "./components/Items";
 import ItemPage from "./components/ItemPage";
 import SearchBar from "./components/SearchBar";
 
+import axios from "axios";
+
+const dbItemsReload = (updatedItems) => {
+  axios.delete('http://localhost:3001/items')
+    .then(response => {
+      console.log("Старі дані успішно видалено");
+      axios.post('http://localhost:3001/items', updatedItems)
+        .then(response => {
+          console.log("Нові дані успішно вставлено");
+          //this.setState({ items: updatedItems });
+        })
+        .catch(error => {
+          console.log("Помилка вставлення нових даних:", error);
+        });
+    })
+    .catch(error => {
+      console.log("Помилка видалення старих даних:", error);
+    });
+}
+
 class App extends React.Component {
   constructor(props){
       super(props);
       this.state = {
-        items: [
-          {
-            id: 1,
-            bookname: 'Перша книга',
-            author: 'Автор книги 1',
-            cover: './covers/1.jpg',
-            pagenum: '123',
-            publicationdate: '2001',
-            genre: 'науковий',
-            description: 'Текст що описує книгу книгу книгу книгу книгу книгу книгу книгу.',
-            rating: 0,
-            reviewText: '',
-            readingStatus: 'Читатиму'
-          },
-          {
-            id: 2,
-            bookname: 'Друга книга',
-            author: 'Автор книги 2',
-            cover: './covers/2.jpg',
-            pagenum: '1232',
-            publicationdate: '2002',
-            genre: 'фікшн',
-            description: 'Текст що описує книгу книгу книгу книгу книгу книгу книгу книгу.',
-            rating: 5,
-            reviewText: 'Текст що описує відгук користувача про книгу книгу книгу книгу книгу книгу книгу книгу.',
-            readingStatus: 'Читаю'
-          },
-          {
-            id: 3,
-            bookname: 'Третя книга',
-            author: 'Автор книги 3',
-            cover: './covers/3.jpg',
-            pagenum: '342',
-            publicationdate: '2003',
-            genre: 'нонфікшн',
-            description: 'Текст що описує книгу книгу книгу книгу книгу книгу книгу книгу.',
-            rating: 3,
-            reviewText: 'Текст що описує відгук користувача про книгу книгу книгу книгу книгу книгу книгу книгу.',
-            readingStatus: 'Прочитав'
-          },
-
-        ],
+        items: [],
         activeStatus: 'Читатиму',
         selectedItem: null,
         searchText: ''
       }
+  }
+
+  componentDidMount() {
+    axios.get('http://localhost:3001/items')
+      .then(response => {
+        this.setState({ items: response.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   handleStatusChange = (status) => {
@@ -61,11 +50,27 @@ class App extends React.Component {
   }; 
 
   handleItemsChange = (updatedItems) => {
-      this.setState({ items: updatedItems });
+    axios.delete('http://localhost:3001/items')
+      .then(response => {
+        console.log("Старі дані успішно видалено");
+        axios.post('http://localhost:3001/items', updatedItems)
+          .then(response => {
+            console.log("Нові дані успішно вставлено");
+            this.setState({ items: updatedItems });
+          })
+          .catch(error => {
+            console.log("Помилка вставлення нових даних:", error);
+          });
+      })
+      .catch(error => {
+        console.log("Помилка видалення старих даних:", error);
+      });
   };
 
   handleGoBackToLists = () => {
-      this.setState({ selectedItem: null });
+    this.setState({ selectedItem: null });
+    const updatedItems = this.state.items;
+    dbItemsReload(updatedItems);
   };
 
   handleItemClick = (clickedItem) => {
@@ -76,6 +81,7 @@ class App extends React.Component {
     const updatedItems = this.state.items.map(item =>
       item.id === updatedItem.id ? updatedItem : item
     );
+    dbItemsReload(updatedItems);
     this.setState({ items: updatedItems });
   };
 
@@ -86,8 +92,10 @@ class App extends React.Component {
       }
       return item;
     });
+    dbItemsReload(updatedItems);
     this.setState({ items: updatedItems });
   };
+
   handleSavePage = (updatedItem) => {
     const updatedItems = this.state.items.map(item => {
       if (item.id === updatedItem.id) {
@@ -95,6 +103,7 @@ class App extends React.Component {
       }
       return item;
     });
+    dbItemsReload(updatedItems);
     this.setState({ items: updatedItems });
   };
 
@@ -112,29 +121,47 @@ class App extends React.Component {
       reviewText: '',
       readingStatus: this.state.activeStatus
     }];
+    dbItemsReload(updatedItems);
     this.setState({ items: updatedItems });
   };
 
   handleDeleteItem = (itemId) => {
     const updatedItems = this.state.items.filter(item => item.id !== itemId);
+    dbItemsReload(updatedItems);
     this.setState({ items: updatedItems });
   };
 
   handleDeleteCover = () => {
     const { selectedItem } = this.state;
-    selectedItem.cover = '';
-    this.setState({ selectedItem });
+    const filename = selectedItem.cover.split('/').pop();
+
+    axios.delete(`http://localhost:3001/delete-cover/${filename}`)
+        .then(response => {
+            console.log('File deleted successfully:', response.data);
+            selectedItem.cover = '';
+            const updatedItems = this.state.items.map(item => {
+                if (item === selectedItem) {
+                    item.cover = selectedItem.cover;
+                }
+                return item;
+            });
+            dbItemsReload(updatedItems);
+            this.setState({ selectedItem });
+        })
+        .catch(error => {
+            console.error('There was a problem with your Axios request:', error);
+        });
   };
 
-  handleAddCover = (coverData) => {
+  handleAddCover = (coverURL) => {
     const { selectedItem, items } = this.state;
     const updatedItems = items.map(item => {
         if (item === selectedItem) {
-            item.cover = URL.createObjectURL(coverData);
-            console.log(URL.createObjectURL(coverData));
+            item.cover = coverURL;
         }
         return item;
     });
+    dbItemsReload(updatedItems);
     this.setState({ items: updatedItems });
   };
 

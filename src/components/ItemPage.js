@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Dropdown from './Dropdown'
 import StarRating from './StarRating';
+import axios from 'axios';
 
 export class ItemPage extends Component {
     constructor(props) {
@@ -92,10 +93,26 @@ export class ItemPage extends Component {
         fileInput.onchange = this.handleCoverChange;
         fileInput.click();
     };
-    
+
     handleCoverChange = (event) => {
+        const { onDeleteCover } = this.props;
+        onDeleteCover();
         const file = event.target.files[0];
-        this.props.onAddCover(file);
+        const formData = new FormData();
+        formData.append('cover', file);
+
+        axios.post('http://localhost:3001/upload', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
+        .then(response => {
+            console.log('File uploaded successfully:', response.data);
+            this.props.onAddCover(response.data.coverURL);
+        })
+        .catch(error => {
+            console.error('There was a problem with your Axios request:', error);
+        });
     };
 
     handleReadingStatusChange = (status) => {

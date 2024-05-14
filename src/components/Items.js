@@ -70,9 +70,9 @@ export class Items extends Component {
         }
 
         if (reviewFilterOption === 'reviewed') {
-            filteredItemstemp = filteredItemstemp.filter(item => item.reviewText !== '');
+            filteredItemstemp = filteredItemstemp.filter(item => item.reviewText !== '' && item.reviewText !== null);
         } else if (reviewFilterOption === 'unreviewed') {
-            filteredItemstemp = filteredItemstemp.filter(item => item.reviewText === '');
+            filteredItemstemp = filteredItemstemp.filter(item => item.reviewText === '' || item.reviewText === null);
         }
 
         if (genreFilterOption !== 'all') {
