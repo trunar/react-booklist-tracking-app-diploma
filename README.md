@@ -1,12 +1,14 @@
+![image](https://github.com/trunar/react-booklist-tracking-app-diploma/assets/93582094/06ad7a40-c869-42ca-9c59-f69a967a05b3)
+
 ![image](https://github.com/trunar/react-booklist-tracking-app-diploma/assets/93582094/36095b20-ceff-4cd6-bead-72f66680ea44)
 
 ![image](https://github.com/trunar/react-booklist-tracking-app-diploma/assets/93582094/af0d12c5-f169-4a29-b1c6-4ae7175e9b6c)
 
-Object of research is tools for managing the reading list.
+Object of research is software tools for supporting user hobbies.
 
-Subject of research is Web applications for creating and tracking your own reading list.
+The subject of research is software tools for managing reading lists.
 
-Purpose is to create a Web application to improve the tracking of your own reading list, storage of read literature, planned and currently read literature, convenient search and sorting of this literature.
+The purpose of the study is to create a web application to improve the tracking of user's reading list.
 
 Results. A JavaScript-based web application that allows the user to manage the reading list has been created.
 
