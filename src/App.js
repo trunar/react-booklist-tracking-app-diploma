@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import Items from "./components/Items";
 import ItemPage from "./components/ItemPage";
 import SearchBar from "./components/SearchBar";
+import AuthForm from "./components/AuthForm";
 
 import axios from "axios";
 
@@ -13,7 +14,6 @@ const dbItemsReload = (updatedItems) => {
       axios.post('http://localhost:3001/items', updatedItems)
         .then(response => {
           console.log("Нові дані успішно вставлено");
-          //this.setState({ items: updatedItems });
         })
         .catch(error => {
           console.log("Помилка вставлення нових даних:", error);
@@ -31,7 +31,9 @@ class App extends React.Component {
         items: [],
         activeStatus: 'Читатиму',
         selectedItem: null,
-        searchText: ''
+        searchText: '',
+        currentUser: null,
+        userId: null
       }
   }
 
@@ -119,7 +121,8 @@ class App extends React.Component {
       description: '',
       rating: 0,
       reviewText: '',
-      readingStatus: this.state.activeStatus
+      readingStatus: this.state.activeStatus,
+      userId: this.state.userId
     }];
     dbItemsReload(updatedItems);
     this.setState({ items: updatedItems });
@@ -169,49 +172,118 @@ class App extends React.Component {
     this.setState({ searchText: text });
   };
 
-  render(){
-    const { selectedItem, searchText } = this.state;
+  handleAuthClick = (login, password) => {
+    axios.post('http://localhost:3001/auth', { login, password })
+    .then(response => {
+      if (response.data.success) {
+        this.setState({ userId: response.data.userId, currentUser: response.data.login });
+      } else {
+        this.setState({ userId: null, currentUser: null });
+        alert("Введені дані є некоректними");
+      }
+    })
+    .catch(error => {
+      console.error('Error authenticating:', error);
+    });
+  }
 
-    if (selectedItem === null){
-      return (
-        <div className="wrapper">
-          <Header
-            onStatusChange={this.handleStatusChange}
-            selectedItem={selectedItem}
-            onGoBackToLists={this.handleGoBackToLists}
-          />
-          <SearchBar 
-            onSearchTextChange={this.handleSearchTextChange}
-          />
-          <Items
-            items={this.state.items}
-            onItemsChange={this.handleItemsChange}
-            activeStatus={this.state.activeStatus}
-            onItemClick={this.handleItemClick}
-            onAddItem={this.handleAddItem}
-            onDeleteItem={this.handleDeleteItem}
-            searchText={searchText}
-          />
-        </div>
-      );
+  handleRegisterClick = (login, password) => {
+    if (login !== '' && password !== ''){
+      axios.post('http://localhost:3001/register', { login, password })
+      .then(response => {
+        if (response.data.success) {
+          alert("Створено нового користувача " + login);
+          axios.post('http://localhost:3001/auth', { login, password })
+          .then(response => {
+            if (response.data.success) {
+              this.setState({ userId: response.data.userId, currentUser: response.data.login });
+            } else {
+              this.setState({ userId: null, currentUser: null });
+              alert("Введені дані є некоректними");
+            }
+          })
+          .catch(error => {
+            console.error('Error authenticating:', error);
+          });
+        } else {
+          alert("Помилка реєстрації");
+        }
+      })
+      .catch(error => {
+        alert("Користувач вже існує");
+        console.error('Error registering user:', error);
+      });
+    } else {alert("Дані введено некоректно");}
+  }
+
+  handleLogoutClick = () => {
+    this.setState({
+      activeStatus: 'Читатиму',
+      selectedItem: null,
+      searchText: '',
+      userId: null,
+      currentUser: null
+    });
+    window.location.reload();
+  }
+
+  render(){
+    const { selectedItem, searchText, currentUser, userId } = this.state;
+
+    if (currentUser){
+      if (selectedItem === null){
+        return (
+          <div className="wrapper">
+            <div className="logoutdiv">Вітаємо, {currentUser}! <span className="logoutbutton" onClick={this.handleLogoutClick}>Вийти</span></div>
+            <Header
+              onStatusChange={this.handleStatusChange}
+              selectedItem={selectedItem}
+              onGoBackToLists={this.handleGoBackToLists}
+            />
+            <SearchBar 
+              onSearchTextChange={this.handleSearchTextChange}
+            />
+            <Items
+              items={this.state.items}
+              onItemsChange={this.handleItemsChange}
+              activeStatus={this.state.activeStatus}
+              onItemClick={this.handleItemClick}
+              onAddItem={this.handleAddItem}
+              onDeleteItem={this.handleDeleteItem}
+              searchText={searchText}
+              userId={userId}
+            />
+          </div>
+        );
+      } else {
+        return (
+          <div className="wrapper">
+            <div className="logoutdiv">Вітаємо, {currentUser}! <span className="logoutbutton" onClick={this.handleLogoutClick}>Вийти</span></div>
+            <Header
+              onStatusChange={this.handleStatusChange}
+              selectedItem={selectedItem}
+              onGoBackToLists={this.handleGoBackToLists}
+            />
+            <ItemPage
+              selectedItem={selectedItem}
+              onRatingChange={this.handleRatingChange}
+              onSaveReviewText={this.handleSaveReviewText}
+              onSavePage={this.handleSavePage}
+              onDeleteItem={this.handleDeleteItem}
+              onGoBackToLists={this.handleGoBackToLists}
+              onAddCover={this.handleAddCover}
+              onDeleteCover={this.handleDeleteCover}
+              onReadingStatusChange={this.handleStatusChange}
+            />
+          </div>
+        );
+      }
     } else {
-      return (
+      return(
         <div className="wrapper">
-          <Header
-            onStatusChange={this.handleStatusChange}
-            selectedItem={selectedItem}
-            onGoBackToLists={this.handleGoBackToLists}
-          />
-          <ItemPage
-            selectedItem={selectedItem}
-            onRatingChange={this.handleRatingChange}
-            onSaveReviewText={this.handleSaveReviewText}
-            onSavePage={this.handleSavePage}
-            onDeleteItem={this.handleDeleteItem}
-            onGoBackToLists={this.handleGoBackToLists}
-            onAddCover={this.handleAddCover}
-            onDeleteCover={this.handleDeleteCover}
-            onReadingStatusChange={this.handleStatusChange}
+          <AuthForm
+            onAuthClick={this.handleAuthClick}
+            onRegisterClick={this.handleRegisterClick}
           />
         </div>
       );

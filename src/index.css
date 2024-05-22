@@ -331,6 +331,9 @@ input:focus {
 .sidediv label {
     font-size: 1.25rem;
 }
+.sidediv label:hover{
+    cursor: pointer;
+}
 .pageNumForm input {
     font-family: inherit;
     font-size: 1rem;
@@ -346,4 +349,74 @@ input:focus {
 }
 input[type='radio'] {
     accent-color: #862B0D;
+}
+.authform {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    border: 1px solid #862B0D;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.formdiv, #logininput, #passwordinput{
+    text-align: center;
+    font-size: 2rem;
+}
+.formbuttons {
+    display: flex;
+    justify-content: space-between;
+}
+.formbuttons button{
+    font-size: 1.25rem;
+    color: inherit;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #862B0D;
+    border-radius: 15px;
+    background: inherit;
+    margin: 1rem;
+    transition: all 1s ease;
+}
+.formbuttons button:hover{
+    cursor: pointer;
+    background-color: rgba(255, 128, 0, 0.043);
+    border-color: rgb(202, 0, 0);
+    color: rgb(202, 0, 0);
+    scale: 1.025;
+}
+#logininput, #passwordinput{
+    background: inherit;
+    color: inherit;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #862B0D;
+    border-radius: 15px;
+    font-size: 1.25rem;
+    padding: 0.5rem;
+}
+.formdiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+.formgroup {
+    margin-bottom: 1rem;
+}
+.formgroup label {
+    display: block;
+    margin-bottom: 1rem;
+}
+.logoutdiv{
+    text-align: right;
+}
+.logoutbutton{
+    color: blue;
+    transition: all 1s ease;
+}
+.logoutbutton:hover{
+    color:red;
+    cursor: pointer;
 }

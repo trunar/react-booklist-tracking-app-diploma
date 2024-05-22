@@ -23,8 +23,8 @@ app.post('/items', (req, res) =>{
     const items = req.body;
 
     db.query(
-        'INSERT INTO items (id, bookname, author, cover, pagenum, publicationdate, genre, description, rating, reviewText, readingStatus) VALUES ?',
-        [items.map(item => [item.id, item.bookname, item.author, item.cover, item.pagenum, item.publicationdate, item.genre, item.description, item.rating, item.reviewText, item.readingStatus])],
+        'INSERT INTO items (id, bookname, author, cover, pagenum, publicationdate, genre, description, rating, reviewText, readingStatus, userId) VALUES ?',
+        [items.map(item => [item.id, item.bookname, item.author, item.cover, item.pagenum, item.publicationdate, item.genre, item.description, item.rating, item.reviewText, item.readingStatus, item.userId])],
         (err, result) => {
             if (err) {
                 console.error('Помилка вставки даних:', err);
@@ -87,6 +87,51 @@ app.delete('/delete-cover/:filename', (req, res) => {
     });
 });
 
+app.post('/auth', (req, res) => {
+    const { login, password } = req.body;
+
+    db.query('SELECT * FROM users WHERE login = ? AND password = ?', [login, password], (error, results) => {
+        if (error) {
+            console.error('Error authenticating user:', error);
+            res.status(500).json({ success: false, error: 'Internal server error' });
+            return;
+        }
+  
+        if (results.length > 0) {
+            res.json({ success: true, userId: results[0].id, login: results[0].login });
+        } else {
+            res.json({ success: false });
+        }
+    });
+});
+
+app.post('/register', (req, res) => {
+    const { login, password } = req.body;
+
+    db.query('SELECT * FROM users WHERE login = ?', [login], (error, results) => {
+        if (error) {
+            console.error('Error registering user:', error);
+            res.status(500).json({ success: false, error: 'Internal server error' });
+            return;
+        }
+
+        if (results.length > 0) {
+            res.status(400).json({ success: false, error: 'User with this login already exists' });
+            return;
+        }
+
+        db.query('INSERT INTO users (login, password) VALUES (?, ?)', [login, password], (insertError, insertResults) => {
+        if (insertError) {
+            console.error('Error registering user:', insertError);
+            res.status(500).json({ success: false, error: 'Internal server error' });
+            return;
+        }
+
+        res.status(201).json({ success: true });
+        });
+    });
+});
+  
 
 app.listen(3001, () => {
     console.log("Server is running. Port: 3001")

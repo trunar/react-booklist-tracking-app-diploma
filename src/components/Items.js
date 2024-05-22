@@ -50,13 +50,14 @@ export class Items extends Component {
     };
 
     render() {
-        const { items, activeStatus, searchText } = this.props;
+        const { items, activeStatus, searchText, userId } = this.props;
         const { filterOption, reviewFilterOption, genreFilterOption, minPageFilter, maxPageFilter } = this.state;
 
         let filteredItemstemp = items.filter(item =>
             (item.readingStatus === activeStatus)
-            
         );
+
+        filteredItemstemp = filteredItemstemp.filter(item => item.userId === userId);
 
         filteredItemstemp = filteredItemstemp.filter(item =>
             (item.bookname.toLowerCase().includes(searchText.toLowerCase()) ||
